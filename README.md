@@ -1,9 +1,9 @@
 # tokentest
 
 
-pip3 install -r "requirements.txt"
-python3 manage.py makemigrations
-python3 manage.py migrate
+pip3 install -r "requirements.txt" <br/>
+python3 manage.py makemigrations </br>
+python3 manage.py migrate </br>
 
 슈퍼유저 생성
 python3 manage.py createsuperuser
