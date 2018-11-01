@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block content %}
+  <div style="display:flex">
+    <div>
+      <p>from</p>
+      <form method="post">
+        {% csrf_token %}
+        <select name="address" id="from_account">
+          {% for account in accounts %}
+          <option class="{{ account }}" value= {{ account }}>{{ account }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <div id="from_info">
+        <p>계정 address : </p>
+        <p>이더 : {{ balance }}</p>
+        <p>presto토큰 : {{ token }}</p>
+      </div>
+    </div>
+    <div style="flex:0.2;"></div>
+    <div>
+      <p>to</p>
+      <form method="post">
+        {% csrf_token %}
+        <select name="address" id="to_account">
+          {% for account in accounts %}
+          <option class="{{ account }}" value= {{ account }}>{{ account }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <div id="to_info">
+        <p>계정 address : </p>
+        <p>이더 : {{ balance }}</p>
+        <p>presto토큰 : {{ token }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p>이더전송 : <input name="ether" id="eth_value"> <button id="eth">전송하기</button>
+    </p>
+  </div>
+  <div>
+    <p>토큰전송 : <input name="presto" id="presto_value"> <button id="presto">전송하기</button>
+    </p>
+
+  </div>
+
+  <script>
+  //eth 전송
+    $("#eth").click(function() {
+        var from = $('#from_account').val();
+        var to = $('#to_account').val();
+        var value = $('#eth_value').val();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'core:send_eth' %}",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'from':from,
+                'to':to,
+                'value': value
+            },
+            success: function(r){
+
+            },
+            error:function(e){
+                console.log(e)
+                alert('다시 시도해주세요')
+            }
+        })
+    })
+
+  //presto 전송
+    $("#presto").click(function() {
+        var from = $('#from_account').val();
+        var to = $('#to_account').val();
+        var value = $('#presto_value').val();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'core:send_presto' %}",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'from':from,
+                'to': to,
+                'value': value
+            },
+            success: function(){
+                alert('변화를 확인해주세요')
+            },
+            error:function(e){
+                console.log(e)
+                alert('다시 시도해주세요')
+            }
+        })
+    });
+
+    //from 주소 변경ajax
+    $("#from_account").on('change',function() {
+        var address = $(this).val()
+        console.log(address)
+        $.ajax({
+            type:"POST",
+            url: "{% url 'core:send' %}",
+            data: {'address': address},
+            success: function(r){
+                document.getElementById("from_info").innerHTML = r
+            },
+            error: function(){
+                console.log(address)
+                alert('다시 시도해주세요')
+            }
+        })
+    });
+
+    //to 주소 변경 ajax
+    $("#to_account").on('change',function() {
+        var address = $(this).val()
+        console.log(address)
+        $.ajax({
+            type:"POST",
+            url: "{% url 'core:send' %}",
+            data: {'address': address},
+            success: function(r){
+                document.getElementById("to_info").innerHTML = r
+            },
+            error: function(){
+                console.log(address)
+                alert('다시 시도해주세요')
+            }
+        })
+    })
+
+
+  </script>
+{% endblock %}

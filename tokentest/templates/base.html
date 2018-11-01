@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="{% static 'js/ajax_settings.js' %}"></script>
+</head>
+<body>
+  <p>page list</p>
+  <a href="{% url "core:create_address" %}"}>계좌생성</a>
+  <a href="{% url "core:deploy" %}">컨트렉트배포</a>
+  <a href="{% url "core:send"%}">토큰전송</a>
+  <a href="{% url "core:etherf" %}">이더받기</a>
+{% block content %}{% endblock %}
+</body>
+</html>

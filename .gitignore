@@ -2,3 +2,5 @@
 .DS_Store/
 .idea/
 chain-data/
+db.sqlite3
+__pycache__/
